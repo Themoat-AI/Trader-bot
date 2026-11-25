@@ -1,0 +1,4 @@
+2026-11-25 22:43:50,919 INFO Bot started: universe=crypto symbols=['BTC/USD', 'ETH/USD', 'SOL/USD'] dry_run=True model trained until 2026-11-25 21:00:00+00:00
+2026-11-25 22:43:51,697 INFO BTC/USD  p_up 0.434              HOLD (no signal)
+2026-11-25 22:43:51,699 INFO ETH/USD  p_up 0.423              HOLD (no signal)
+2026-11-25 22:43:51,700 INFO SOL/USD  p_up 0.388              HOLD (no signal)
