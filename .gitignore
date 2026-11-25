@@ -1,0 +1,14 @@
+.env
+.env.*
+*.pyc
+__pycache__/
+.pytest_cache/
+.venv/
+venv/
+*.log
+*.sqlite
+*.sqlite3
+bot_log.csv
+btc_features.csv
+model.npz
+artifacts/
