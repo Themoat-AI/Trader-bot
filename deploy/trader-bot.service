@@ -1,0 +1,22 @@
+# systemd service: keeps the bot running 24/7 on a Linux server and restarts it if it crashes.
+#
+# Install (on the server, from the project folder):
+#   sudo cp deploy/trader-bot.service /etc/systemd/system/
+#   sudo nano /etc/systemd/system/trader-bot.service     # fix User and the paths below
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now trader-bot
+#   journalctl -u trader-bot -f                          # watch the logs
+[Unit]
+Description=Trader bot (Alpaca paper trading)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=trader
+WorkingDirectory=/home/trader/trader-bot
+ExecStart=/home/trader/trader-bot/.venv/bin/python -m trader.bot --live
+Restart=on-failure
+RestartSec=60
+
+[Install]
+WantedBy=multi-user.target
