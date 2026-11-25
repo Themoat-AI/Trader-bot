@@ -1,0 +1,64 @@
+# Runs one bot cycle every hour on GitHub's servers.
+#
+# Setup (once): repo Settings -> Secrets and variables -> Actions
+#   Secrets:   ALPACA_API_KEY, ALPACA_SECRET_KEY   (your PAPER keys)
+#   Variables: TRADER_LIVE = true   to place paper orders (leave unset for dry run)
+name: Trade
+
+on:
+  schedule:
+    - cron: "7 * * * *"       # 7 minutes past every hour (UTC)
+  workflow_dispatch:           # "Run workflow" button on the Actions tab
+
+permissions:
+  contents: write              # to save the journal to the bot-state branch
+
+concurrency:
+  group: bot-state             # never run two jobs that write state at once
+  cancel-in-progress: false
+
+jobs:
+  trade:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+      ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
+      TRADER_STATE_DIR: ${{ github.workspace }}/state
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements-bot.txt
+      - run: pip install -r requirements-bot.txt
+
+      - name: Check keys are set
+        run: |
+          if [ -z "$ALPACA_API_KEY" ] || [ -z "$ALPACA_SECRET_KEY" ]; then
+            echo "::error::Add ALPACA_API_KEY and ALPACA_SECRET_KEY under Settings -> Secrets and variables -> Actions"
+            exit 1
+          fi
+
+      - name: Load saved state
+        run: deploy/load_state.sh
+
+      - name: Train a model if there isn't one yet
+        run: |
+          if [ ! -f state/models/crypto.npz ]; then
+            python -m trader.data
+            python -m trader.train
+            python -m trader.backtest
+          fi
+
+      - name: Run one bot cycle
+        run: python -m trader.bot --once ${{ vars.TRADER_LIVE == 'true' && '--live' || '' }}
+
+      - name: Summary
+        if: always()
+        run: python -m trader.report >> "$GITHUB_STEP_SUMMARY" || true
+
+      - name: Save state
+        if: always()
+        run: deploy/save_state.sh "Bot cycle $(date -u +%Y-%m-%dT%H:%MZ)"

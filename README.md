@@ -29,9 +29,11 @@ Alpaca bars ─► features.py ─► nn.py (MLP, from scratch) ─► strategy.
 | `trader/journal.py` | SQLite log of every decision, order and equity snapshot |
 | `trader/bot.py` | The live bot |
 | `trader/dashboard.py` | Streamlit dashboard |
+| `trader/report.py` | Markdown summary of the journal (shown on GitHub Actions runs) |
 | `tests/` | 23 tests: no-lookahead, gradient check, XOR, fee math, risk rules, bot cycle |
 | `learning/` | The original day-one scripts |
-| `deploy/` | systemd service + monthly retrain script for running 24/7 on a server |
+| `deploy/` | State scripts for GitHub Actions, plus a systemd service + retrain script for your own server |
+| `.github/workflows/` | Hourly trading, weekly retraining and tests on GitHub Actions |
 
 ### What the model predicts
 "Will the next **24 hours** return beat the **round-trip trading cost**?" The day-one
@@ -95,6 +97,26 @@ are listed below.
 - Longer history, or daily bars instead of hourly.
 - Compare everything against the logistic baseline: a bigger network has to earn its keep.
 
-## Running 24/7
+## Running 24/7 on GitHub (no computer needed)
+GitHub Actions runs the bot for free from this repo:
+
+| Workflow | When | What |
+|---|---|---|
+| **Trade** | every hour (:07 UTC) | one bot cycle; summary shown on the run page |
+| **Retrain** | Sundays 03:23 UTC | fresh data, retrain, backtest |
+| **Tests** | every push | runs the test suite |
+
+The journal, model and charts are saved to the `bot-state` branch between runs.
+
+**Setup (once):** repo **Settings → Secrets and variables → Actions**
+1. **Secrets** tab → add `ALPACA_API_KEY` and `ALPACA_SECRET_KEY` (your **paper** keys).
+2. **Actions** tab → **Trade** → **Run workflow** to start it right away.
+3. When you're happy with the dry runs: **Variables** tab → add `TRADER_LIVE` = `true` to place paper orders.
+   Delete the variable to go back to dry run.
+
+Notes: GitHub can start scheduled runs a few minutes late, and it pauses schedules in
+repos with no activity for 60 days (re-enable them on the Actions tab).
+
+## Running on your own server instead
 See `deploy/trader-bot.service` (auto-restart on crash) and `deploy/retrain.sh`
 (monthly retrain). A small Linux VPS or a Raspberry Pi is enough.

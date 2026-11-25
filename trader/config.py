@@ -10,10 +10,13 @@ load_dotenv(ROOT / ".env")
 ALPACA_API_KEY = os.getenv("ALPACA_API_KEY")
 ALPACA_SECRET_KEY = os.getenv("ALPACA_SECRET_KEY")
 
-DATA_DIR = ROOT / "data"
-MODEL_DIR = ROOT / "models"
-REPORT_DIR = ROOT / "reports"
-JOURNAL_DB = ROOT / "data" / "journal.db"
+# Where data, models and reports are kept. GitHub Actions points this at the
+# saved-state folder so the journal and model survive between hourly runs.
+STATE_DIR = Path(os.getenv("TRADER_STATE_DIR", ROOT))
+DATA_DIR = STATE_DIR / "data"
+MODEL_DIR = STATE_DIR / "models"
+REPORT_DIR = STATE_DIR / "reports"
+JOURNAL_DB = DATA_DIR / "journal.db"
 
 # ---------------------------------------------------------------------------
 # Universes: a group of symbols traded with one model.
