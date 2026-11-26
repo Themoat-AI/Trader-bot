@@ -41,7 +41,8 @@ model predicted the next 1 hour, where moves are smaller than fees, so it couldn
 profit even when it was right.
 
 ### Strategy and risk rules
-- Buy when P > 0.60, sell when P < 0.45 (after holding at least 6h), always exit after 48h.
+- Buy when P > 0.40, sell when P < 0.33 (after holding at least 6h), always exit after 48h.
+  (0.60 / 0.45 trades far less and lost less in the backtest.)
 - 5% stop loss per position.
 - Max 10% of equity per position, scaled down for volatile assets; max 3 positions.
 - Stop opening trades for the day at -2%; shut down completely at -15% from peak.

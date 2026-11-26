@@ -69,8 +69,10 @@ WALK_FORWARD_START = 0.4   # first fold trains on the first 40% of history
 # ---------------------------------------------------------------------------
 # Strategy
 # ---------------------------------------------------------------------------
-ENTER_THRESHOLD = 0.60  # buy when P(beats fees) is above this
-EXIT_THRESHOLD = 0.45   # sell when it drops below this (gap avoids flip-flopping)
+# Lowered from 0.60 so the bot trades more often. In the backtest 0.60 lost ~10%
+# and 0.40 lost ~15% (stopped by the drawdown kill switch): more trades, more fees.
+ENTER_THRESHOLD = 0.40  # buy when P(beats fees) is above this
+EXIT_THRESHOLD = 0.33   # sell when it drops below this (gap avoids flip-flopping)
 MIN_HOLD_BARS = 6       # don't sell a fresh position just because of noise
 MAX_HOLD_BARS = 48      # always exit after this long (2x the horizon)
 
