@@ -102,7 +102,7 @@ GitHub Actions runs the bot for free from this repo:
 
 | Workflow | When | What |
 |---|---|---|
-| **Trade** | every hour (:07 UTC) | one bot cycle; summary shown on the run page |
+| **Trade** | every 15 min (acts once per hourly bar) | one bot cycle, placing **paper** orders; summary shown on the run page |
 | **Retrain** | Sundays 03:23 UTC | fresh data, retrain, backtest |
 | **Tests** | every push | runs the test suite |
 
@@ -111,8 +111,8 @@ The journal, model and charts are saved to the `bot-state` branch between runs.
 **Setup (once):** repo **Settings → Secrets and variables → Actions**
 1. **Secrets** tab → add `ALPACA_API_KEY` and `ALPACA_SECRET_KEY` (your **paper** keys).
 2. **Actions** tab → **Trade** → **Run workflow** to start it right away.
-3. When you're happy with the dry runs: **Variables** tab → add `TRADER_LIVE` = `true` to place paper orders.
-   Delete the variable to go back to dry run.
+3. It places **paper** orders by default. To only log decisions without ordering:
+   **Variables** tab → add `TRADER_DRY_RUN` = `true` (delete it to resume trading).
 
 Notes: GitHub can start scheduled runs a few minutes late, and it pauses schedules in
 repos with no activity for 60 days (re-enable them on the Actions tab).

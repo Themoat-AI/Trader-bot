@@ -120,6 +120,12 @@ def run_cycle(u, model, scaler, broker, journal, risk, params=Params(), limits=R
     return actions
 
 
+def last_finished_bar(now=None):
+    """Start time of the most recent completed hourly bar."""
+    now = pd.Timestamp(now or datetime.now(timezone.utc))
+    return now.floor("h") - pd.Timedelta(hours=1)
+
+
 def seconds_until_next_bar(now=None):
     now = now or datetime.now(timezone.utc)
     nxt = now.replace(minute=0, second=0, microsecond=0) + timedelta(hours=1)
@@ -159,6 +165,12 @@ def main():
 
     log.info("Bot started: universe=%s symbols=%s dry_run=%s model trained until %s",
              u["name"], u["symbols"], dry_run, meta["trained_until"])
+    if args.once and journal.has_bar(last_finished_bar()):
+        # Scheduled runs fire every 15 minutes in case GitHub skips some; only the
+        # first one after each hourly bar closes actually trades.
+        log.info("Bar %s already handled, nothing to do.", last_finished_bar())
+        return
+
     errors = 0
     while True:
         try:

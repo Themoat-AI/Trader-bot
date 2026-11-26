@@ -62,6 +62,12 @@ class Journal:
                               (self.universe, symbol)).fetchone()
         return row[0] if row else None
 
+    def has_bar(self, bar_time):
+        """True if the bot already made decisions for this bar (avoids double-trading)."""
+        row = self.db.execute("SELECT 1 FROM decisions WHERE universe=? AND bar_time=? LIMIT 1",
+                              (self.universe, str(bar_time))).fetchone()
+        return row is not None
+
     def peak_equity(self):
         row = self.db.execute("SELECT MAX(equity) FROM equity WHERE universe=?", (self.universe,)).fetchone()
         return row[0] or 0.0

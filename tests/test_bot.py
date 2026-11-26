@@ -75,3 +75,13 @@ def test_uses_only_finished_bars(tmp_path):
     from trader.bot import latest_features
     latest, _ = latest_features(U, fetch, now=NOW)
     assert (latest["timestamp"] <= NOW.replace(minute=0) - np.timedelta64(1, "h")).all()
+
+
+def test_skips_bar_already_handled(tmp_path):
+    from trader.bot import last_finished_bar
+    journal = Journal(tmp_path / "j.db", "test")
+    bar = last_finished_bar(NOW)
+    assert str(bar) == "2025-01-19 23:00:00+00:00"
+    assert not journal.has_bar(bar)
+    run_cycle(U, ConstModel(0.1), Identity(), FakeBroker(), journal, RiskState(), fetch=fetch, now=NOW)
+    assert journal.has_bar(bar)
