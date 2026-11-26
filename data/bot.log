@@ -2,3 +2,7 @@
 2026-11-25 22:43:51,697 INFO BTC/USD  p_up 0.434              HOLD (no signal)
 2026-11-25 22:43:51,699 INFO ETH/USD  p_up 0.423              HOLD (no signal)
 2026-11-25 22:43:51,700 INFO SOL/USD  p_up 0.388              HOLD (no signal)
+2026-11-26 03:22:35,395 INFO Bot started: universe=crypto symbols=['BTC/USD', 'ETH/USD', 'SOL/USD'] dry_run=True model trained until 2026-11-25 21:00:00+00:00
+2026-11-26 03:22:36,024 INFO SOL/USD  p_up 0.371              HOLD (no signal)
+2026-11-26 03:22:36,025 INFO ETH/USD  p_up 0.354              HOLD (no signal)
+2026-11-26 03:22:36,026 INFO BTC/USD  p_up 0.353              HOLD (no signal)
