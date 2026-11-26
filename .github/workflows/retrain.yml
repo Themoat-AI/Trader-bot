@@ -10,7 +10,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: bot-state
+  group: retrain               # runs alongside the trading loop; state saves retry on conflict
   cancel-in-progress: false
 
 jobs:

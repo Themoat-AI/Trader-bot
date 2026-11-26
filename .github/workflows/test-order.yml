@@ -9,7 +9,7 @@ on:
         default: "100"
 
 concurrency:
-  group: bot-state             # don't run at the same moment as the bot
+  group: test-order           # independent of the bot; it never touches a coin the bot holds
   cancel-in-progress: false
 
 jobs:

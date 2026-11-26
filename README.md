@@ -107,7 +107,7 @@ GitHub Actions runs the bot for free from this repo:
 
 | Workflow | When | What |
 |---|---|---|
-| **Trade** | every 15 min (acts once per hourly bar) | one bot cycle per market (crypto + stocks), placing **paper** orders; summary on the run page |
+| **Trade** | each run trades every hour for ~5.5h; triggers every 15 min queue the next run | one bot cycle per market (crypto + stocks), placing **paper** orders; summary on the run page |
 | **Retrain** | Sundays 03:23 UTC | fresh data, retrain, backtest |
 | **Tests** | every push | runs the test suite |
 

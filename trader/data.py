@@ -4,6 +4,7 @@
     python -m trader.data --universe stocks
 """
 import argparse
+import time
 from datetime import datetime, timedelta, timezone
 
 import pandas as pd
@@ -11,6 +12,18 @@ import pandas as pd
 from trader import config
 
 BAR_COLUMNS = ["symbol", "timestamp", "open", "high", "low", "close", "volume"]
+
+
+def with_retries(call, attempts=5, wait=20):
+    """Alpaca answers 'too many requests' when we download too fast: wait and retry."""
+    for i in range(attempts):
+        try:
+            return call()
+        except Exception as e:  # alpaca raises APIError or requests' HTTPError
+            if "429" not in str(e) and "too many requests" not in str(e).lower() or i == attempts - 1:
+                raise
+            print(f"Rate limited by Alpaca, waiting {wait * (i + 1)}s...")
+            time.sleep(wait * (i + 1))
 
 
 def fetch_bars(u, start, end=None):
@@ -21,10 +34,11 @@ def fetch_bars(u, start, end=None):
         from alpaca.data.historical import CryptoHistoricalDataClient
         from alpaca.data.requests import CryptoBarsRequest
 
-        client = CryptoHistoricalDataClient()
+        # Crypto data works without keys, but logged-in requests get a much higher rate limit.
+        client = CryptoHistoricalDataClient(config.ALPACA_API_KEY, config.ALPACA_SECRET_KEY)
         request = CryptoBarsRequest(symbol_or_symbols=u["symbols"], timeframe=TimeFrame.Hour,
                                     start=start, end=end)
-        raw = client.get_crypto_bars(request).df
+        raw = with_retries(lambda: client.get_crypto_bars(request)).df
     else:
         from alpaca.data.enums import DataFeed
         from alpaca.data.historical import StockHistoricalDataClient
@@ -33,7 +47,7 @@ def fetch_bars(u, start, end=None):
         client = StockHistoricalDataClient(config.ALPACA_API_KEY, config.ALPACA_SECRET_KEY)
         request = StockBarsRequest(symbol_or_symbols=u["symbols"], timeframe=TimeFrame.Hour,
                                    start=start, end=end, feed=DataFeed.IEX)  # IEX feed is free
-        raw = client.get_stock_bars(request).df
+        raw = with_retries(lambda: client.get_stock_bars(request)).df
 
     df = raw.reset_index()[BAR_COLUMNS]
     df["timestamp"] = pd.to_datetime(df["timestamp"], utc=True)

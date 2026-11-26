@@ -8,8 +8,8 @@ name: Trade
 
 on:
   schedule:
-    # Every 15 minutes: GitHub often skips or delays scheduled runs, so we try
-    # several times an hour. The bot only acts once per hourly bar.
+    # Each run trades every hour for ~5.5 hours (deploy/trade_loop.sh). GitHub's
+    # scheduler skips many runs, so triggers fire often; extra ones just queue.
     - cron: "2,17,32,47 * * * *"
   workflow_dispatch:           # "Run workflow" button on the Actions tab
 
@@ -23,7 +23,7 @@ concurrency:
 jobs:
   trade:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 350
     env:
       ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
       ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
@@ -48,25 +48,8 @@ jobs:
       - name: Load saved state
         run: deploy/load_state.sh
 
-      - name: Train a model for any market that doesn't have one yet
-        run: |
-          for u in $TRADER_UNIVERSES; do
-            if [ ! -f "state/models/$u.npz" ]; then
-              python -m trader.data --universe "$u"
-              python -m trader.train --universe "$u"
-              python -m trader.backtest --universe "$u"
-            fi
-          done
-
-      - name: Run one bot cycle per market
-        run: |
-          failed=0
-          for u in $TRADER_UNIVERSES; do
-            echo "::group::$u"
-            python -m trader.bot --once --universe "$u" ${{ vars.TRADER_DRY_RUN != 'true' && '--live' || '' }} || failed=1
-            echo "::endgroup::"
-          done
-          exit $failed
+      - name: Trade every hour for ~5.5 hours
+        run: deploy/trade_loop.sh ${{ vars.TRADER_DRY_RUN != 'true' && '--live' || '' }}
 
       - name: Summary
         if: always()
@@ -77,4 +60,4 @@ jobs:
 
       - name: Save state
         if: always()
-        run: deploy/save_state.sh "Bot cycle $(date -u +%Y-%m-%dT%H:%MZ)"
+        run: deploy/save_state.sh "Bot run ended $(date -u +%Y-%m-%dT%H:%MZ)"

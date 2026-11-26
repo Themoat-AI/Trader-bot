@@ -12,4 +12,10 @@ if git diff --cached --quiet; then
   exit 0
 fi
 git commit -q -m "$message"
-git push origin HEAD:bot-state
+# Another job (e.g. Retrain) may have pushed meanwhile: replay our commit on top and retry.
+for attempt in 1 2 3; do
+  git push -q origin HEAD:bot-state && exit 0
+  git pull -q --rebase origin bot-state || true
+done
+echo "Could not save state after 3 tries" >&2
+exit 1
