@@ -20,12 +20,13 @@ JOURNAL_DB = DATA_DIR / "journal.db"
 
 # ---------------------------------------------------------------------------
 # Universes: a group of symbols traded with one model.
-# Pick which one the bot uses with UNIVERSE (or the TRADER_UNIVERSE env var).
+# GitHub Actions trades every universe listed in TRADER_UNIVERSES.
 # ---------------------------------------------------------------------------
 UNIVERSES = {
     "crypto": {
         "asset_class": "crypto",
-        "symbols": ["BTC/USD", "ETH/USD", "SOL/USD"],
+        "symbols": ["BTC/USD", "ETH/USD", "SOL/USD", "LTC/USD", "LINK/USD", "AVAX/USD",
+                    "DOGE/USD", "BCH/USD", "UNI/USD", "AAVE/USD", "DOT/USD"],
         "market_symbol": "BTC/USD",   # "the whole market" feature for every coin
         "fee": 0.0025,                # Alpaca crypto taker fee, per side
         "slippage": 0.0005,
@@ -33,14 +34,16 @@ UNIVERSES = {
     },
     "stocks": {
         "asset_class": "stock",
-        "symbols": ["SPY", "QQQ", "AAPL", "MSFT", "NVDA"],
+        "symbols": ["SPY", "QQQ", "IWM", "DIA",                      # index funds = the market
+                    "AAPL", "MSFT", "NVDA", "AMZN", "GOOGL", "META", "TSLA"],
         "market_symbol": "SPY",       # SPY = the S&P 500, i.e. the market
         "fee": 0.0,                   # Alpaca stock trades are commission-free
         "slippage": 0.0005,
-        "bars_per_year": 7 * 252,     # ~7 hourly bars per trading day
+        "bars_per_year": 7 * 252,     # 7 regular-session hourly bars per trading day
     },
 }
-UNIVERSE = os.getenv("TRADER_UNIVERSE", "crypto")
+UNIVERSE = os.getenv("TRADER_UNIVERSE", "crypto")      # default for command-line tools
+TRADED_UNIVERSES = os.getenv("TRADER_UNIVERSES", "crypto stocks").split()
 
 HISTORY_DAYS = 730      # how much history to download for training
 

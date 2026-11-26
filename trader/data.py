@@ -37,7 +37,20 @@ def fetch_bars(u, start, end=None):
 
     df = raw.reset_index()[BAR_COLUMNS]
     df["timestamp"] = pd.to_datetime(df["timestamp"], utc=True)
+    if u["asset_class"] == "stock":
+        df = regular_session(df)
+    missing = sorted(set(u["symbols"]) - set(df["symbol"]))
+    if missing:
+        print(f"Warning: no data returned for {missing}")
     return df.sort_values(["symbol", "timestamp"]).reset_index(drop=True)
+
+
+def regular_session(df):
+    """Keep the 7 hourly bars that start 9:00-15:00 New York time (the regular
+    session). Pre- and after-market bars are thin and noisy on the free feed."""
+    hour = df["timestamp"].dt.tz_convert("America/New_York").dt.hour
+    weekday = df["timestamp"].dt.tz_convert("America/New_York").dt.weekday
+    return df[(hour >= 9) & (hour <= 15) & (weekday < 5)]
 
 
 def drop_unfinished(df, now=None, bar=timedelta(hours=1)):

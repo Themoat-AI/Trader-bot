@@ -50,3 +50,12 @@ def test_regularize_fills_missing_hours():
     assert len(out) == 50
     assert out.loc[10, "close"] == out.loc[9, "close"]
     assert out.loc[10, "volume"] == 0
+
+
+def test_regular_session_keeps_market_hours_only():
+    from trader.data import regular_session
+    t = pd.date_range("2026-11-23 00:00", periods=48, freq="1h", tz="UTC")   # Mon-Tue
+    df = pd.DataFrame({"symbol": "SPY", "timestamp": t, "close": 1.0})
+    ny_hours = regular_session(df)["timestamp"].dt.tz_convert("America/New_York").dt.hour
+    assert sorted(ny_hours.unique()) == list(range(9, 16))
+    assert len(regular_session(df)) == 14     # 7 bars x 2 days

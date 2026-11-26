@@ -21,6 +21,7 @@ jobs:
       ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
       ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
       TRADER_STATE_DIR: ${{ github.workspace }}/state
+      TRADER_UNIVERSES: ${{ vars.TRADER_UNIVERSES || 'crypto stocks' }}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -34,9 +35,11 @@ jobs:
       - name: Download, train, backtest
         run: |
           set -o pipefail
-          python -m trader.data
-          python -m trader.train | tee state/reports/train.md
-          python -m trader.backtest | tee state/reports/backtest.md
-          { echo "## Retrain"; echo '```'; cat state/reports/train.md state/reports/backtest.md; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          for u in $TRADER_UNIVERSES; do
+            python -m trader.data --universe "$u"
+            python -m trader.train --universe "$u" | tee "state/reports/${u}_train.md"
+            python -m trader.backtest --universe "$u" | tee "state/reports/${u}_backtest.md"
+            { echo "## Retrain: $u"; echo '```'; cat "state/reports/${u}_train.md" "state/reports/${u}_backtest.md"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          done
       - name: Save state
         run: deploy/save_state.sh "Retrain $(date -u +%Y-%m-%d)"

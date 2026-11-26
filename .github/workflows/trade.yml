@@ -3,6 +3,7 @@
 # Setup (once): repo Settings -> Secrets and variables -> Actions
 #   Secrets:   ALPACA_API_KEY, ALPACA_SECRET_KEY   (your PAPER keys)
 #   Variables: TRADER_DRY_RUN = true   to only log decisions without placing paper orders
+#              TRADER_UNIVERSES = "crypto stocks" (default) — which markets to trade
 name: Trade
 
 on:
@@ -27,6 +28,7 @@ jobs:
       ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
       ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
       TRADER_STATE_DIR: ${{ github.workspace }}/state
+      TRADER_UNIVERSES: ${{ vars.TRADER_UNIVERSES || 'crypto stocks' }}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -46,20 +48,32 @@ jobs:
       - name: Load saved state
         run: deploy/load_state.sh
 
-      - name: Train a model if there isn't one yet
+      - name: Train a model for any market that doesn't have one yet
         run: |
-          if [ ! -f state/models/crypto.npz ]; then
-            python -m trader.data
-            python -m trader.train
-            python -m trader.backtest
-          fi
+          for u in $TRADER_UNIVERSES; do
+            if [ ! -f "state/models/$u.npz" ]; then
+              python -m trader.data --universe "$u"
+              python -m trader.train --universe "$u"
+              python -m trader.backtest --universe "$u"
+            fi
+          done
 
-      - name: Run one bot cycle
-        run: python -m trader.bot --once ${{ vars.TRADER_DRY_RUN != 'true' && '--live' || '' }}
+      - name: Run one bot cycle per market
+        run: |
+          failed=0
+          for u in $TRADER_UNIVERSES; do
+            echo "::group::$u"
+            python -m trader.bot --once --universe "$u" ${{ vars.TRADER_DRY_RUN != 'true' && '--live' || '' }} || failed=1
+            echo "::endgroup::"
+          done
+          exit $failed
 
       - name: Summary
         if: always()
-        run: python -m trader.report >> "$GITHUB_STEP_SUMMARY" || true
+        run: |
+          for u in $TRADER_UNIVERSES; do
+            python -m trader.report --universe "$u" >> "$GITHUB_STEP_SUMMARY" || true
+          done
 
       - name: Save state
         if: always()

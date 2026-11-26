@@ -75,8 +75,12 @@ python -m trader.bot --live             # place PAPER orders every hour
 streamlit run trader/dashboard.py       # dashboard
 ```
 
-Use `--universe stocks` (SPY, QQQ, AAPL, MSFT, NVDA) to trade stocks. The bot skips
-cycles while the market is closed.
+Two markets, each with its own model:
+- **crypto**: BTC, ETH, SOL, LTC, LINK, AVAX, DOGE, BCH, UNI, AAVE, DOT (24/7)
+- **stocks**: SPY, QQQ, IWM, DIA, AAPL, MSFT, NVDA, AMZN, GOOGL, META, TSLA
+  (regular-session hourly bars; the bot skips cycles while the market is closed)
+
+Use `--universe stocks` on any command to work with stocks; crypto is the default.
 
 ## Results so far (crypto, Sep 2025 – Nov 2026, out-of-sample, after costs)
 
@@ -103,7 +107,7 @@ GitHub Actions runs the bot for free from this repo:
 
 | Workflow | When | What |
 |---|---|---|
-| **Trade** | every 15 min (acts once per hourly bar) | one bot cycle, placing **paper** orders; summary shown on the run page |
+| **Trade** | every 15 min (acts once per hourly bar) | one bot cycle per market (crypto + stocks), placing **paper** orders; summary on the run page |
 | **Retrain** | Sundays 03:23 UTC | fresh data, retrain, backtest |
 | **Tests** | every push | runs the test suite |
 
