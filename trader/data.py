@@ -63,7 +63,7 @@ def regular_session(df):
     """Keep the 7 hourly bars that start 9:00-15:00 New York time (the regular
     session). Pre- and after-market bars are thin and noisy on the free feed."""
     hour = df["timestamp"].dt.tz_convert("America/New_York").dt.hour
-    weekday = df["timestamp"].dt.tz_convert("America/New_York").dt.weekday
+    weekday = df["timestamp"].dt.tz_convert("America/New_York").dt.day_of_week
     return df[(hour >= 9) & (hour <= 15) & (weekday < 5)]
 
 
