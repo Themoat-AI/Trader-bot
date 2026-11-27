@@ -147,3 +147,17 @@
 2026-11-27 06:02:03,782 INFO DOGE/USD p_up 0.312              HOLD (no signal)
 2026-11-27 06:02:04,192 INFO Bot started: universe=stocks symbols=['SPY', 'QQQ', 'IWM', 'DIA', 'AAPL', 'MSFT', 'NVDA', 'AMZN', 'GOOGL', 'META', 'TSLA'] dry_run=False model trained until 2026-11-25 20:00:00+00:00
 2026-11-27 06:02:04,245 INFO Market closed, skipping.
+2026-11-27 09:36:32,694 INFO Bot started: universe=crypto symbols=['BTC/USD', 'ETH/USD', 'SOL/USD', 'LTC/USD', 'LINK/USD', 'AVAX/USD', 'DOGE/USD', 'BCH/USD', 'UNI/USD', 'AAVE/USD', 'DOT/USD'] dry_run=False model trained until 2026-11-26 16:00:00+00:00
+2026-11-27 09:36:36,364 INFO AAVE/USD p_up 0.353 held  16 bars  HOLD (in position)
+2026-11-27 09:36:36,366 INFO UNI/USD  p_up 0.363 held  16 bars  HOLD (in position)
+2026-11-27 09:36:36,367 INFO BCH/USD  p_up 0.380              HOLD (no signal)
+2026-11-27 09:36:36,368 INFO LINK/USD p_up 0.371              HOLD (no signal)
+2026-11-27 09:36:36,369 INFO SOL/USD  p_up 0.363              HOLD (no signal)
+2026-11-27 09:36:36,370 INFO ETH/USD  p_up 0.360              HOLD (no signal)
+2026-11-27 09:36:36,371 INFO DOT/USD  p_up 0.356              HOLD (no signal)
+2026-11-27 09:36:36,373 INFO LTC/USD  p_up 0.353              HOLD (no signal)
+2026-11-27 09:36:36,374 INFO AVAX/USD p_up 0.344              HOLD (no signal)
+2026-11-27 09:36:36,375 INFO DOGE/USD p_up 0.334              HOLD (no signal)
+2026-11-27 09:36:36,376 INFO BTC/USD  p_up 0.329              HOLD (no signal)
+2026-11-27 09:36:36,942 INFO Bot started: universe=stocks symbols=['SPY', 'QQQ', 'IWM', 'DIA', 'AAPL', 'MSFT', 'NVDA', 'AMZN', 'GOOGL', 'META', 'TSLA'] dry_run=False model trained until 2026-11-25 20:00:00+00:00
+2026-11-27 09:36:37,137 INFO Market closed, skipping.
