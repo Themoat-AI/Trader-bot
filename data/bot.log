@@ -231,3 +231,28 @@
 2026-11-27 14:02:05,190 INFO LINK/USD p_up 0.343              HOLD (no signal)
 2026-11-27 14:02:05,748 INFO Bot started: universe=stocks symbols=['SPY', 'QQQ', 'IWM', 'DIA', 'AAPL', 'MSFT', 'NVDA', 'AMZN', 'GOOGL', 'META', 'TSLA'] dry_run=False model trained until 2026-11-25 20:00:00+00:00
 2026-11-27 14:02:05,938 INFO Market closed, skipping.
+2026-11-27 15:02:01,124 INFO Bot started: universe=crypto symbols=['BTC/USD', 'ETH/USD', 'SOL/USD', 'LTC/USD', 'LINK/USD', 'AVAX/USD', 'DOGE/USD', 'BCH/USD', 'UNI/USD', 'AAVE/USD', 'DOT/USD'] dry_run=False model trained until 2026-11-26 16:00:00+00:00
+2026-11-27 15:02:05,125 INFO AAVE/USD p_up 0.445 held  22 bars  HOLD (in position)
+2026-11-27 15:02:05,196 INFO AVAX/USD p_up 0.378 held   5 bars  SELL (stop loss)
+2026-11-27 15:02:05,198 INFO UNI/USD  p_up 0.417 held  22 bars  HOLD (in position)
+2026-11-27 15:02:05,267 INFO DOGE/USD p_up 0.435              BUY (model confident)
+2026-11-27 15:02:05,268 INFO BCH/USD  p_up 0.430              HOLD (blocked: max positions)
+2026-11-27 15:02:05,269 INFO DOT/USD  p_up 0.415              HOLD (blocked: max positions)
+2026-11-27 15:02:05,270 INFO BTC/USD  p_up 0.401              HOLD (blocked: max positions)
+2026-11-27 15:02:05,272 INFO ETH/USD  p_up 0.399              HOLD (no signal)
+2026-11-27 15:02:05,273 INFO SOL/USD  p_up 0.386              HOLD (no signal)
+2026-11-27 15:02:05,274 INFO LTC/USD  p_up 0.383              HOLD (no signal)
+2026-11-27 15:02:05,275 INFO LINK/USD p_up 0.382              HOLD (no signal)
+2026-11-27 15:02:05,276 INFO AVAX/USD p_up 0.378              HOLD (no signal)
+2026-11-27 15:02:05,858 INFO Bot started: universe=stocks symbols=['SPY', 'QQQ', 'IWM', 'DIA', 'AAPL', 'MSFT', 'NVDA', 'AMZN', 'GOOGL', 'META', 'TSLA'] dry_run=False model trained until 2026-11-25 20:00:00+00:00
+2026-11-27 15:02:10,461 INFO DIA      p_up 0.596              BUY (model confident)
+2026-11-27 15:02:10,524 INFO AAPL     p_up 0.537              BUY (model confident)
+2026-11-27 15:02:10,587 INFO SPY      p_up 0.530              BUY (model confident)
+2026-11-27 15:02:10,588 INFO IWM      p_up 0.516              HOLD (blocked: max positions)
+2026-11-27 15:02:10,589 INFO QQQ      p_up 0.511              HOLD (blocked: max positions)
+2026-11-27 15:02:10,590 INFO AMZN     p_up 0.502              HOLD (blocked: max positions)
+2026-11-27 15:02:10,591 INFO META     p_up 0.432              HOLD (blocked: max positions)
+2026-11-27 15:02:10,592 INFO MSFT     p_up 0.413              HOLD (blocked: max positions)
+2026-11-27 15:02:10,593 INFO TSLA     p_up 0.387              HOLD (no signal)
+2026-11-27 15:02:10,594 INFO GOOGL    p_up 0.349              HOLD (no signal)
+2026-11-27 15:02:10,595 INFO NVDA     p_up 0.113              HOLD (no signal)
