@@ -354,3 +354,17 @@
 2026-11-28 02:02:31,809 INFO AVAX/USD p_up 0.374              HOLD (no signal)
 2026-11-28 02:02:32,364 INFO Bot started: universe=stocks symbols=['SPY', 'QQQ', 'IWM', 'DIA', 'AAPL', 'MSFT', 'NVDA', 'AMZN', 'GOOGL', 'META', 'TSLA'] dry_run=False model trained until 2026-11-25 20:00:00+00:00
 2026-11-28 02:02:32,590 INFO Market closed, skipping.
+2026-11-28 03:02:01,461 INFO Bot started: universe=crypto symbols=['BTC/USD', 'ETH/USD', 'SOL/USD', 'LTC/USD', 'LINK/USD', 'AVAX/USD', 'DOGE/USD', 'BCH/USD', 'UNI/USD', 'AAVE/USD', 'DOT/USD'] dry_run=False model trained until 2026-11-26 16:00:00+00:00
+2026-11-28 03:02:03,326 INFO AAVE/USD p_up 0.431 held  34 bars  HOLD (in position)
+2026-11-28 03:02:03,328 INFO DOGE/USD p_up 0.443 held  12 bars  HOLD (in position)
+2026-11-28 03:02:03,329 INFO UNI/USD  p_up 0.345 held  34 bars  HOLD (in position)
+2026-11-28 03:02:03,330 INFO SOL/USD  p_up 0.435              HOLD (blocked: max positions)
+2026-11-28 03:02:03,332 INFO AVAX/USD p_up 0.426              HOLD (blocked: max positions)
+2026-11-28 03:02:03,333 INFO DOT/USD  p_up 0.424              HOLD (blocked: max positions)
+2026-11-28 03:02:03,334 INFO BTC/USD  p_up 0.419              HOLD (blocked: max positions)
+2026-11-28 03:02:03,335 INFO ETH/USD  p_up 0.411              HOLD (blocked: max positions)
+2026-11-28 03:02:03,336 INFO BCH/USD  p_up 0.410              HOLD (blocked: max positions)
+2026-11-28 03:02:03,338 INFO LTC/USD  p_up 0.406              HOLD (blocked: max positions)
+2026-11-28 03:02:03,339 INFO LINK/USD p_up 0.356              HOLD (no signal)
+2026-11-28 03:02:03,943 INFO Bot started: universe=stocks symbols=['SPY', 'QQQ', 'IWM', 'DIA', 'AAPL', 'MSFT', 'NVDA', 'AMZN', 'GOOGL', 'META', 'TSLA'] dry_run=False model trained until 2026-11-25 20:00:00+00:00
+2026-11-28 03:02:03,968 INFO Market closed, skipping.
